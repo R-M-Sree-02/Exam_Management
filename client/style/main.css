@@ -1,0 +1,268 @@
+* {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     transition-duration: .5s;
+}
+
+body {
+     font-family: system-ui;
+     line-height: 1.5;
+     color: #333;
+     background: #f5f7fa;
+     min-height: 100vh;
+}
+
+
+header {
+     background: #1e3a8a;
+     color: white;
+     padding: 20px 0;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+     text-align: center;
+     font-size: 28px;
+     font-weight: bold;
+}
+
+
+main {
+     margin: 0 auto;
+     padding: 30px 20px;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+}
+
+
+h2 {
+     color: #1e3a8a;
+     text-align: center;
+     margin-bottom: 1em;
+     font-size: 2em;
+}
+
+
+button {
+     background: #3b82f6;
+     color: white;
+     border: none;
+     padding: 12px 24px;
+     border-radius: 8px;
+     font-size: 16px;
+     cursor: pointer;
+     margin: 10px 5px;
+     /* transition: all 0.3s ease; */
+}
+
+button:hover {
+     background: #2563eb;
+     transform: translateY(-2px);
+     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+
+#home,
+#login,
+#signUp {
+     width: 30%;
+     margin: 0 auto;
+     background: white;
+     padding: 3em;
+     border-radius: 12px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+}
+
+#home p {
+     text-align: center;
+     color: #666;
+     margin-bottom: 30px;
+     font-size: 16px;
+}
+
+input {
+     width: 100%;
+     padding: 15px;
+     margin: 10px 0;
+     border: 2px solid #e2e8f0;
+     border-radius: 8px;
+     font-size: 16px;
+     /* transition: border-color 0.3s ease; */
+}
+
+input:focus {
+     outline: none;
+     border-color: #3b82f6;
+     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#homeBtn {
+     width: 2em;
+     margin: 20px 0;
+     color: white;
+     position: absolute;
+     top: 0;
+     left: 1.5em;
+     cursor: pointer;
+}
+
+#loginStatus,
+#signUpStatus {
+     text-align: center;
+     margin-top: 20px;
+     min-height: 20px;
+}
+
+#studentTable {
+     width: 100%;
+}
+
+#studentsList {
+     width: 80%;
+     margin: auto;
+     background: white;
+     border-radius: 12px;
+     overflow: hidden;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+     text-align: center;
+}
+
+#studentsList h3 {
+     margin: 2em;
+}
+
+
+#studentsList thead {
+     background: #1e3a8a;
+     color: white;
+}
+
+#studentsList th,
+#studentsList td {
+     padding: 15px 12px;
+     text-align: left;
+}
+
+#studentsList tbody tr:nth-child(even) {
+     background: #f8fafc;
+}
+
+#studentsList tbody tr:hover {
+     background: #eff6ff;
+}
+
+#addStudentResult{
+     text-align: center;
+}
+
+#logOut {
+     text-align: center;
+     margin-top: 1.5em;
+     position: absolute;
+     top: -5px;
+     right: 1em;
+     background: #ef4444 !important;
+}
+
+#logOut:hover,
+#confirmLogOut button:first-of-type {
+     background: #dc2626 !important;
+}
+
+#confirmLogOut {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     backdrop-filter: blur(8px);
+     display: none;
+     justify-content: center;
+     align-items: center;
+     z-index: 10;
+     line-height: 3;
+     font-size: 1.5em;
+}
+
+.container {
+     background-color: white;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     padding: 1em;
+     border-radius: 15px;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#options {
+     gap: 2em;
+     margin: 1em 0;
+     padding: 1.2em;
+     border-radius: 12px;
+     width: 40%;
+     /* transition-duration: 1s; */
+}
+
+#options div {
+     font-size: 1.5em;
+     font-weight: 600;
+     cursor: pointer;
+     background-color: #1f48b9;
+     border-radius: 15px;
+     color: white;
+     text-align: center;
+     padding: .8em 0;
+     margin: 2em;
+     /* width: 50%; */
+}
+
+#options div:hover {
+     transform: scale(1.1);
+     background-color: #2563eb;
+}
+
+#addStudent {
+     width: 27%;
+     margin-top: 3em;
+}
+
+
+select {
+     width: 47%;
+     padding: 1em;
+     font-size: 1em;
+     border: 1px solid #dce3f0;
+     border-radius: 8px;
+     outline: none;
+     background-color: #fff;
+
+     appearance: none;
+     -webkit-appearance: none;
+     -moz-appearance: none;
+
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23999' d='M8 9l4 4 4-4'/%3E%3C/svg%3E");
+     background-repeat: no-repeat;
+     background-position: right 10px bottom 7px;
+     background-size: 2em;
+}
+
+#std {
+     margin-right: 1.3em;
+}
+
+select:focus {
+     border-color: #3b82f6;
+     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+
+}
+
+#addStudentBtn {
+     margin: .5em 34%;
+}

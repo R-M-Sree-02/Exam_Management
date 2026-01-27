@@ -1,0 +1,20 @@
+{
+  "functions": {
+    "targets": [
+      "add_exam",
+      "add_school",
+      "add_student",
+      "get_all_students",
+      "get_all_students_by_school",
+      "get_school",
+      "get_student",
+      "update_marks",
+      "get_results_by_std"
+    ],
+    "ignore": [],
+    "source": "functions"
+  },
+  "client": {
+    "source": "client"
+  }
+}
