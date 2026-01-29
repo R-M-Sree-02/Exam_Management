@@ -1,6 +1,6 @@
 function generateId() {
     const timePart = Date.now().toString().slice(-8);
-    const randomPart = Math.floor(Math.random() * 5000);
+    const randomPart = Math.floor(Math.random() * 500);
     return timePart + randomPart;
 }
 
@@ -13,7 +13,7 @@ function error(...args) {
 }
 
 function getValue(idName) {
-    return $(`#${idName}`).val().trim();
+    return $(`#${idName}`).val()//.trim();
 }
 
 function getSchoolId() {
@@ -24,18 +24,13 @@ function setSchoolId(id) {
     localStorage.setItem("school_id", id);
 }
 
-function setExamId(id) {
-    localStorage.setItem("exam_id", id);
+function getFirstPossibleYear() {
+    let year = new Date().getFullYear();
+    return (year - 1) + "-" + ("" + year).slice(2, 4);
 }
 
-function getExamId() {
-    return localStorage.getItem("exam_id");
+function getSecondPossibleYear() {
+    let year = new Date().getFullYear();
+    return year + "-" + ("" + (year + 1)).slice(2, 4);
 }
 
-function setStudentId(id) {
-    localStorage.setItem("student_id", id);
-}
-
-function getStudentId() {
-    return localStorage.getItem("student_id");
-}

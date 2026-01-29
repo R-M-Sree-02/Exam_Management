@@ -26,25 +26,25 @@
 
 
 
-        <div id="login">
-            <input type="text" id="schoolId_login" placeholder="School Id" />
-            <input type="password" id="password_login" placeholder="Password" />
+        <form id="login">
+            <input type="text" id="schoolId_login" placeholder="School Id" minlength="11" maxlength="11" autocomplete="off" required />
+            <input type="password" id="password_login" placeholder="Password" minlength="8" maxlength="12" required />
             <button id="loginBtn" onclick="login()">Login</button>
             <p id="loginStatus"></p>
-        </div>
+        </form>
 
 
-        <div id="signUp">
-            <input type="text" id="schoolName_signup" placeholder="School Name">
-            <input type="password" id="schoolPassword_signup" placeholder="Password">
-            <input type="text" id="address_signup" placeholder="Address">
-            <button id="signUpBtn" onclick="signUp()">Sign Up</button>
+        <form id="signUp">
+            <input type="text" id="schoolName_signup" placeholder="School Name" minlength="3" maxlength="40" autocomplete="off" required>
+            <input type="password" id="schoolPassword_signup" placeholder="Password" minlength="8" maxlength="12" required>
+            <input type="text" id="address_signup" placeholder="Address" autocomplete="off" required>
+            <button id="signUpBtn" type="submit">Sign Up</button>
             <p id="signUpStatus"></p>
-        </div>
+        </form>
     </main>
 
-    <script src="../script/main.js"></script>
     <script src="../script/helper.js"></script>
+    <script src="../script/main.js"></script>
     <script>
         window.onload = () => {
             let params = new URLSearchParams(window.location.search);
@@ -60,6 +60,19 @@
                 $("#login").hide();
             }
         }
+
+        $("#login").on("submit", function (e) {
+            e.preventDefault();
+            console.log("login page prevent");
+            login();
+        });
+
+        $("#signUp").on("submit", function (e) {
+            e.preventDefault();
+            console.log("login page prevent");
+            signUp();
+        });
+
     </script>
 </body>
 

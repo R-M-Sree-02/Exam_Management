@@ -29,7 +29,14 @@ function signUp() {
 }
 
 function login() {
+
      let id_given = getValue("schoolId_login"), password_given = getValue("password_login");
+
+     if (!(/^\d+$/).test(id_given)) {
+          $("#loginStatus").text("Invalid School ID or Password");
+          $("#loginStatus").css("color", 'red');
+          return;
+     }
 
      let school = {
           "school_id": id_given,
@@ -51,6 +58,7 @@ function login() {
                     window.location.href = "../views/mainPage.html";
                } else {
                     $("#loginStatus").text("Invalid School ID or Password");
+                    $("#loginStatus").css("color", 'red');
                }
           },
           error: function (err) {
@@ -112,7 +120,7 @@ function getAllStudentBySchool() {
 }
 
 function getStudentByName() {
-     let name = $("#studentName").val().trim();
+     let name = getValue("studentName");
      if (!name) {
           alert("Enter name");
           return;
@@ -140,6 +148,20 @@ function getStudentByName() {
      });
 }
 
+function validateStudent() {
+     const dob = new Date(getValue('dob')).getFullYear(), doj = new Date(getValue('doj')).getFullYear(), today = new Date().getFullYear();
+
+     // ---------------------- dob check ----------------------
+     if (today - dob < 5 || today < dob)
+          return { valid: false, type: "dobNotValid" };
+
+     // ---------------------- doj check ----------------------
+     if (doj - dob < 5 || today < doj)
+          return { valid: false, type: "dojNotValid" };
+
+     return { valid: true, type: "all" };
+}
+
 /*
 name   --> studentName
 dob    --> date of birth
@@ -149,7 +171,21 @@ gender --> gender of the student
 accountNumber --> account number of the student(used for unqiue identification for the student)
 */
 function addStudent() {
+
+     $("input").css("border", "1px solid #dce3f0");
+     let pTag = $("#addStudentResult"), dateValidate = validateStudent();
+
+     if (!dateValidate.valid) {
+          pTag.text("Invalid Date given").css("color", "red");
+          if (dateValidate.type == "dobNotValid")
+               $('#dob').css("border", "1px solid red");
+          else
+               $('#doj').css("border", "1px solid red");
+          return;
+     }
+
      const student = {
+          "student_id": generateId(),
           "student_name": getValue("name"),
           "date_of_birth": getValue("dob"),
           "date_of_join": getValue("doj"),
@@ -158,9 +194,8 @@ function addStudent() {
           "account_number": getValue("accountNumber"),
           "school_id": getSchoolId()
      };
-
      log("Student to add:", student);
-     let pTag = $("#addStudentResult");
+
 
      $.ajax({
           url: "/server/students/addStudent",
@@ -176,6 +211,7 @@ function addStudent() {
                console.error(err);
                pTag.text("Give Proper Details").css("color", "red");
                $("input").css("border", "1px solid red");
+               $("select").css("border", "1px solid red");
           }
 
      });
@@ -186,75 +222,104 @@ function addStudent() {
 
 // -------------------------------- exam functions --------------------------------
 
-function addExamResult(studentId) {
-     const exam_result = {
-          student_id: studentId,
-          exam_id: getExamId(),
-          std: "V",
-          subject_1: 0,
-          subject_2: 0,
-          subject_3: 0,
-          subject_4: 0,
-          subject_5: 0,
-          total: 0,
-          final_result: ""
-     };
+
+function addExam() {
+
+     let examStartAt = new Date(getValue('examStartAt')), examEndAt = new Date(getValue('examEndAt'))
+
+     if (examEndAt < examStartAt) {
+          $("#examStatus").text("Invalid Date Given").css("color", 'red');
+          console.log("Exam date is invalid");
+     }
+
+     const exam = {
+          exam_id: generateId(),
+          exam_name: getValue('examName'),
+          std: getValue('stdForExam'),
+          academic_year: $("input[name='academicYear']:checked").val(),
+          exam_start_at: examStartAt,
+          exam_end_at: examEndAt,
+          school_id: getSchoolId()
+     }
 
      $.ajax({
-          url: "/server/exam_results/addExamResult",
+          url: "/server/exams/addExam",
           type: "POST",
           contentType: "application/json",
-          data: JSON.stringify({ exam_result }),
-          success: function (data) {
-               console.log(data);
-               alert("Exam Result Added");
+          data: JSON.stringify({ exam }),
+          success: function (res) {
+               if (res.status === 201)
+                    $("#addExamStatus").text(res.message).css("color", "orange");
+               else
+                    $("#addExamStatus").text(res.message + "Exam Id: " + exam.exam_id).css("color", "green");
           },
-          error: function (err) {
-               console.error(err);
-               alert("Failed to add exam result");
+          error: function () {
+               $("#addExamStatus").text("Failed to add exam").css("color", "red");
           }
      });
 }
 
-
-function updateMarks(rowId) {
-     const marks = {
-          ROWID: rowId,
-          subject_1: 0,
-          subject_2: 0,
-          subject_3: 0,
-          subject_4: 0,
-          subject_5: 0
+function addExamResult() {
+     const examResult = {
+          student_id: getValue('studentId'),
+          exam_id: getValue('examId'),
+          std: getValue('resultStd'),
+          subject_1: getValue('subject1'),
+          subject_2: getValue('subject2'),
+          subject_3: getValue('subject3'),
+          subject_4: getValue('subject4'),
+          subject_5: getValue('subject5')
      };
 
+     log(JSON.stringify(examResult))
+
+
      $.ajax({
-          url: "/server/exam_results/updateExamMarks",
+          url: "/server/exams/addExamResult",
           type: "POST",
           contentType: "application/json",
-          data: JSON.stringify({ marks }),
-          success: function (data) {
-               alert("Total: " + data.total + " | " + data.final_result);
+          data: JSON.stringify({ examResult }),
+          success: function (res) {
+               if (res.status === 201)
+                    $("#addResult_status").text(`Result: ${res.message}`).css("color", "orange");
+               else
+                    $("#addResult_status").text(`Total: ${res.total}, Result: ${res.final_result}`).css("color", "green");
           },
-          error: function (err) {
-               console.error(err);
-               alert("Update failed");
+          error: function () {
+               $("#addResult_status").text("Failed to add result").css("color", "red");
           }
+     });
+
+}
+
+function getResults(examId) {
+     return new Promise((res, rej) => {
+          $.ajax({
+               url: "/server/exams/viewResult?exam_id=" + examId,
+               type: "GET",
+               success: function (data) {
+                    // log(data);
+                    res(data);
+               },
+               error: function (error) {
+                    rej(error);
+               }
+          });
      });
 }
 
-
-function loadResults() {
-     const std = getValue("std");
-     const examId = getExamId();
-
-     $.ajax({
-          url: `/server/exam_results/getResultsByStd?std=${std}&exam_id=${examId}`,
-          type: "GET",
-          success: function (data) {
-               console.log(data);
-          },
-          error: function (err) {
-               console.error(err);
-          }
+function getAllExamDetails() {
+     return new Promise((res, rej) => {
+          $.ajax({
+               url: "/server/exams/getAllExamDetails",
+               type: "GET",
+               success: function (data) {
+                    // log(data);
+                    res(data);
+               },
+               error: function (error) {
+                    rej(error);
+               }
+          });
      });
 }
