@@ -27,7 +27,14 @@ def handler(request: Request):
 
             zcql = app.zcql()
 
-            query = f"SELECT ROWID FROM {EXAMS_TABLE} WHERE exam_start_at = '{exam["exam_start_at"]}' AND exam_end_at = '{exam["exam_end_at"]}' AND std = '{exam["std"]}' AND academic_year = '{exam["academic_year"]}'"
+            query = f"""
+                SELECT ROWID FROM {EXAMS_TABLE}
+                WHERE exam_start_at = '{exam['exam_start_at']}'
+                AND exam_end_at = '{exam['exam_end_at']}'
+                AND std = '{exam['std']}'
+                AND academic_year = '{exam['academic_year']}'
+                """
+            
             temp_exam = zcql.execute_query(query)
 
             if temp_exam:
